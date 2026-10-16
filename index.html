@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPS Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 60px auto;
+      padding: 20px;
+      text-align: center;
+      background: #f2f5f9;
+    }
+    button {
+      padding: 14px 22px;
+      border: 0;
+      border-radius: 8px;
+      background: #1769e0;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+  <h1>GPS დემო</h1>
+  <p>ღილაკზე დაჭერით და ბრაუზერში ნებართვის მიცემით ნახავ შენი მოწყობილობის სავარაუდო GPS კოორდინატებს.</p>
+
+<button onclick="getLocation()">ჩემი კოორდინატების ჩვენება</button>
+
+  <div id="result" aria-live="polite"></div>
+
+  <script>
+    function getLocation() {
+      const result = document.getElementById("result");
+
+      if (!navigator.geolocation) {
+        result.textContent = "ეს ბრაუზერი გეოლოკაციას არ უჭერს მხარს.";
+        return;
+      }
+
+      result.textContent = "მოითხოვება მდებარეობის ნებართვა...";
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          result.innerHTML =
+            "<p><b>განედი:</b> " + lat +
+            "<br><b>გრძედი:</b> " + lon + "</p>" +
+            '<a target="_blank" rel="noopener" href="https://www.google.com/maps?q=' +
+            lat + "," + lon + '">ნახვა Google Maps-ზე</a>';
+        },
+        function(error) {
+          result.textContent =
+            "მდებარეობა ვერ მივიღეთ. შეამოწმე ბრაუზერის ნებართვა და სცადე თავიდან.";
+        },
+        { enableHighAccuracy: true, timeout: 15000 }
+      );
+    }
+  </script>
+
+</body>
+</html>
